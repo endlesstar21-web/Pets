@@ -109,6 +109,11 @@
                     <span id="val-owner" class="value"></span>
                 </div>
 
+                <div id="block-phone" class="info-item">
+                    <span class="label">Telefono</span>
+                    <span id="val-phone" class="value"></span>
+                </div>
+
                 <div id="block-age" class="info-item">
                     <span class="label">Edad</span>
                     <span id="val-age" class="value"></span>
@@ -197,6 +202,7 @@
         document.getElementById('petName').textContent = petData.name;
         
         updateField('block-owner', 'val-owner', petData.owner);
+        updateField('block-phone', 'val-phone', petData.phone);
         updateField('block-age', 'val-age', calculateAge(petData.birthDate));
         updateField('block-color', 'val-color', petData.color);
         updateField('block-sex', 'val-sex', petData.sexo);
