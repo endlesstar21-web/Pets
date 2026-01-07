@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Mascota</title>
+    <style>
+        :root {
+            --primary: #aee2d7;
+            --secondary: #25D366;
+            --text: #2d5a54;
+            --bg: #f0fdfa;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        header {
+            background-color: var(--primary);
+            width: 100%; padding: 40px 0 70px 0;
+            text-align: center; color: white;
+            font-weight: bold; font-size: 1.5rem;
+        }
+
+        .container {
+            width: 90%; max-width: 450px;
+            margin-top: -55px; padding-bottom: 40px;
+        }
+
+        .profile-card {
+            background: white; border-radius: 30px;
+            padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        /* --- CARRUSEL --- */
+        .carousel-container {
+            width: 180px; height: 180px;
+            margin: 0 auto; position: relative;
+        }
+
+        .carousel-track {
+            display: flex; overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            border-radius: 50%; border: 6px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            scrollbar-width: none;
+        }
+
+        .carousel-track::-webkit-scrollbar { display: none; }
+
+        .carousel-item {
+            flex: 0 0 100%; height: 180px;
+            object-fit: cover; 
+            scroll-snap-align: start;
+        }
+
+        .scroll-hint {
+            font-size: 0.7rem; color: #aaa;
+            margin-top: 8px; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        h1 { color: var(--text); font-size: 2.2rem; margin: 15px 0 20px 0; }
+
+        /* --- LISTA DE INFORMACIÓN --- */
+        .info-list { text-align: left; display: flex; flex-direction: column; gap: 12px; }
+
+        /* Clase para ocultar elementos vacíos */
+        .hidden { display: none; }
+
+        .info-item {
+            background-color: #f8fcfb; padding: 15px 20px;
+            border-radius: 15px; border-left: 5px solid var(--primary);
+        }
+
+        .label { font-size: 0.75rem; color: #888; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 3px; }
+        .value { font-size: 1.1rem; font-weight: 600; color: #444; }
+
+        .btn-whatsapp {
+            display: block; background-color: var(--secondary); color: white;
+            text-align: center; padding: 20px; border-radius: 50px;
+            text-decoration: none; font-weight: bold; font-size: 1.2rem;
+            margin-top: 15px; box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <header>IDENTIFICACIÓN</header>
+
+    <div class="container">
+        <div class="profile-card">
+            
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack"></div>
+            </div>
+            <div class="scroll-hint" id="hintText">← Desliza para ver más →</div>
+            
+            <h1 id="petName"></h1>
+
+            <div class="info-list">
+                <div id="block-owner" class="info-item">
+                    <span class="label">Dueño</span>
+                    <span id="val-owner" class="value"></span>
+                </div>
+
+                <div id="block-phone" class="info-item">
+                    <span class="label">Telefono</span>
+                    <span id="val-phone" class="value"></span>
+                </div>
+
+                <div id="block-age" class="info-item">
+                    <span class="label">Edad</span>
+                    <span id="val-age" class="value"></span>
+                </div>
+
+                <div id="block-color" class="info-item">
+                    <span class="label">Color</span>
+                    <span id="val-color" class="value"></span>
+                </div>
+
+                <div id="block-sex" class="info-item">
+                    <span class="label">Sexo</span>
+                    <span id="val-sex" class="value"></span>
+                </div>
+
+                <div id="block-vaccines" class="info-item">
+                    <span class="label">Vacunas / Salud</span>
+                    <span id="val-vaccines" class="value"></span>
+                </div>
+
+                <div id="block-extra" class="info-item">
+                    <span class="label">Notas Especiales</span>
+                    <span id="val-extra" class="value"></span>
+                </div>
+            
+                <a id="waBtn" href="#" class="btn-whatsapp">
+                    AVISAR POR WHATSAPP
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN: Deja en blanco "" lo que no quieras mostrar
+        const petData = {
+            name: "Capuchino",
+            birthDate: "", // Si no quieres edad, deja ""
+            images: [
+                "../img/008_imagen_01.jpg"
+            ],
+            owner: "Elizabeth",
+            phone: "5551328671",
+            color: "Cafe con pocas manchas blancas en pecho y patas",
+            sexo: "Macho",
+            vacunas: "Aplicadas",
+            extra: "No esta esterilizado, ninguna alergia, tiene una lesion en su pata trasera" // Si no hay notas, deja ""
+        };
+
+        // Función para procesar cada campo
+        function updateField(idBlock, idValue, content) {
+            const block = document.getElementById(idBlock);
+            const valueSpan = document.getElementById(idValue);
+            
+            if (content && content.trim() !== "") {
+                valueSpan.textContent = content;
+                block.classList.remove('hidden');
+            } else {
+                block.classList.add('hidden');
+            }
+        }
+
+        // CALCULAR EDAD
+        function calculateAge(birthday) {
+            if(!birthday) return "";
+            const birthDate = new Date(birthday);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--;
+            return age + (age === 1 ? " año" : " años");
+        }
+
+        // CARGAR IMÁGENES
+        const track = document.getElementById('carouselTrack');
+        petData.images.forEach(url => {
+            if(url){
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = 'carousel-item';
+                track.appendChild(img);
+            }
+        });
+        if(petData.images.length <= 1) document.getElementById('hintText').style.display = 'none';
+
+        // ASIGNACIÓN MANUAL DE DATOS (Tú controlas qué va dónde)
+        document.getElementById('petName').textContent = petData.name;
+        
+        updateField('block-owner', 'val-owner', petData.owner);
+        updateField('block-phone', 'val-phone', petData.phone);
+        updateField('block-age', 'val-age', calculateAge(petData.birthDate));
+        updateField('block-color', 'val-color', petData.color);
+        updateField('block-sex', 'val-sex', petData.sexo);
+        updateField('block-vaccines', 'val-vaccines', petData.vacunas);
+        updateField('block-extra', 'val-extra', petData.extra);
+
+        // WHATSAPP
+        if(petData.phone) {
+            const cleanPhone = petData.phone.replace(/\s+/g, '');
+            document.getElementById('waBtn').href = `https://wa.me/52${cleanPhone}?text=Hola%20${encodeURIComponent(petData.owner)},%20encontré%20a%20${petData.name}`;
+        } else {
+            document.getElementById('waBtn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
