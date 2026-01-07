@@ -148,7 +148,7 @@
             name: "Bolo",
             birthDate: "", // Si no quieres edad, deja ""
             images: [
-            { url: "../img/007_imagen_03.jpg", pos: "15%" }
+            { url: "../img/007_imagen_03.jpg"}
             ],
             owner: "Alejandra Becerril",
             phone: "5539412124",
@@ -189,8 +189,6 @@
                 const img = document.createElement('img');
                 img.src = url;
                 img.className = 'carousel-item';
-
-                img.style.objectPosition = `50% ${imgObj.pos}`;
                 track.appendChild(img);
             }
         });
